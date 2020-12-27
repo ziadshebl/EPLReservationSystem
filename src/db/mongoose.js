@@ -7,4 +7,6 @@ mongoose.connect(connectionURL,{
     useCreateIndex: true,
     useUnifiedTopology: true,
     useFindAndModify: false
+}).then(() => {
+    console.log("Done");
 })

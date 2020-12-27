@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 
 //Different routes
-// const registerRouter = require('./routers/register.js')
+const registerRouter = require('./routers/register.js')
 // const userRouter = require('./routers/user.js')
 // const postRouter = require('./routers/post.js')
 // const adminRouter = require('./routers/admin')
@@ -20,7 +20,7 @@ app.use(cors({
     origin: '*'
 }))
 
-// app.use('/register',registerRouter)
+app.use('/register',registerRouter)
 // app.use('/user', userRouter)
 // app.use('/posts', postRouter)
 // app.use('/admin', adminRouter)

@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken')
 
 const userSchema = new mongoose.Schema(
     {
-        username:{
+        userName:{
             type: String,
             required: true,
             unique: true
@@ -71,18 +71,50 @@ const userSchema = new mongoose.Schema(
     }
 )
 
-//Methods 
+//Utilities
+userSchema.pre('save', async function (next) {
+    const user = this
+
+    if(user.isModified('password')){
+        user.password = await bcrypt.hash(user.password,8)
+    }
+
+    next()
+})
+
+//Static Methods
+userSchema.statics.findByCredentials = async (email, password)=>{
+    const user = await User.findOne({
+        $or:[
+            {
+                email
+            }, {
+            userName:email
+        }]
+    })
+    if(!user){
+        throw new Error('Email/Username not Found')
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password)
+
+    if(!isMatch){
+        throw new Error('Password is wrong')
+    }
+    return user
+}
+
+//Methods
 //Generatating an access Token and a refresh token
-userSchema.methods.generateTokens = function (hash) {
+userSchema.methods.generateTokens = function () {
     const user = this
 
     //Generating access token
-    const accessToken = jwt.sign({ _id: user._id.toString(), role: user.role}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN })
+    const accessToken = jwt.sign({ _id: user._id.toString(), role: user.role}, process.env.ACCESS_TOKEN_SECRET)
 
-    return {
-        accessToken,
-        refreshToken
-    }
+    return accessToken
+       
+    
 }
 
 
