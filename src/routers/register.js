@@ -52,10 +52,14 @@ router.post('/signUp', async (req, res) => {
 
         //Saving to database
         await newUser.save()
-
-        res.status(201).send({
-            accessToken
+        
+        res.cookie('accessToken', accessToken, {
+            httpOnly: true,
+            expires: new Date(Date.now() + 24 * 30 * 60 * 60 * 1000),
+            secure: true,
+            sameSite: 'none'
         })
+        res.status(201).send()
         
 
     } catch (e) {
@@ -86,9 +90,15 @@ router.post('/signIn', async (req, res) => {
         //Generate tokens
         const accessToken = user.generateTokens()
 
-       
+        res.cookie('accessToken', accessToken, {
+            httpOnly: true,
+            expires: new Date(Date.now() + 24 * 30 * 60 * 60 * 1000),
+            secure: true,
+            sameSite: 'none'
+        })
+    
         //Send response
-        res.status(201).send({
+        res.status(200).send({
             accessToken
         })
 

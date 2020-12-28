@@ -3,6 +3,7 @@ require('./db/mongoose')
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
+const cookieParser = require('cookie-parser');
 
 //Different routes
 const registerRouter = require('./routers/register.js')
@@ -19,7 +20,7 @@ app.use(cors({
     credentials:true,
     origin: '*'
 }))
-
+app.use(cookieParser())
 app.use('/register',registerRouter)
 // app.use('/user', userRouter)
 // app.use('/posts', postRouter)
