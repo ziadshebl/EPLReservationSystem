@@ -32,7 +32,7 @@ router.post('/signUp', async (req, res) => {
         address,
         city
     } = req.body
-
+    console.log(req.body)
     let newUser
     try {
         newUser = new User({
@@ -84,6 +84,7 @@ router.post('/signUp', async (req, res) => {
 router.post('/signIn', async (req, res) => {
     const { email, password } = req.body
 
+    console.log(req.body)
     try {
         const user = await User.findByCredentials(email, password)
 
