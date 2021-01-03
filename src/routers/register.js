@@ -60,7 +60,20 @@ router.post('/signUp', async (req, res) => {
             secure: true,
             sameSite: 'none'
         })
-        res.status(201).send()
+
+        const userJson = newUser._doc
+
+        delete userJson.email
+        delete userJson.password
+        delete userJson.role
+        delete userJson.accepted
+        //Send response
+        res.status(201).send({
+            accessToken,
+            profile:{
+                ...userJson
+            }
+        })
         
 
     } catch (e) {
@@ -98,10 +111,19 @@ router.post('/signIn', async (req, res) => {
             secure: true,
             sameSite: 'none'
         })
-    
+        
+        const userJson = user._doc
+
+        delete userJson.email
+        delete userJson.password
+        delete userJson.role
+        delete userJson.accepted
         //Send response
-        res.status(200).send({
-            accessToken
+        res.status(201).send({
+            accessToken,
+            profile:{
+                ...userJson
+            }
         })
 
     } catch (e) {

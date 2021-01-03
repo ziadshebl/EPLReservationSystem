@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt')
 //Importing jwt
 const jwt = require('jsonwebtoken')
 
+
 const userSchema = new mongoose.Schema(
     {
         userName:{
@@ -112,11 +113,20 @@ userSchema.methods.generateTokens = function () {
     //Generating access token
     const accessToken = jwt.sign({ _id: user._id.toString(), role: user.role}, process.env.ACCESS_TOKEN_SECRET)
 
-    return accessToken
-       
-    
+    return accessToken  
 }
 
+//OverWritting the default toJson methid
+userSchema.methods.toJSON = function(){
+
+    const user = this;
+
+
+    delete user.password
+    delete user.email
+
+    return user
+}
 
 const User = mongoose.model('User', userSchema)
 

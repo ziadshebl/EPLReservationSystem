@@ -22,11 +22,6 @@ app.use(cors({
 }))
 app.use(cookieParser())
 app.use('/register',registerRouter)
-// app.use('/user', userRouter)
-// app.use('/posts', postRouter)
-// app.use('/admin', adminRouter)
-// app.use('/supplier', supplierRouter)
-// app.use('/store', storeRouter)
 app.get('/', (req,res) => {
 
     res.send("Gamed");
