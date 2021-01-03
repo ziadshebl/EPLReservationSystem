@@ -7,9 +7,12 @@ const cookieParser = require('cookie-parser');
 
 //Different routes
 const registerRouter = require('./routers/register.js');
+const matchRouter = require('./routers/match')
+
 const { aggregate } = require('./models/user');
 const MainRefree = require('./models/mainrefree')
 const Team = require('./models/teams')
+const LinesMan = require('./models/linesman')
 // const userRouter = require('./routers/user.js')
 // const postRouter = require('./routers/post.js')
 // const adminRouter = require('./routers/admin')
@@ -25,6 +28,7 @@ app.use(cors({
 }))
 app.use(cookieParser())
 app.use('/register',registerRouter)
+app.use('/match', matchRouter)
 app.get('/', (req,res) => {
 
     res.send("Gamed");
@@ -62,6 +66,15 @@ app.get('/add/referees', (req,res) => {
         {
             fullName:"Hamdy Shaaban"
         },
+        
+    ])
+
+
+    res.send();
+})
+app.get('/add/linesman', (req, res) => {
+
+    LinesMan.insertMany([
         {
             fullName:"Mamdouh Mostafa"
         },
@@ -93,9 +106,7 @@ app.get('/add/referees', (req,res) => {
             fullName:"Ayman Degesh"
         },
     ])
-
-
-    res.send();
+    res.send()
 })
 app.get('/add/teams', (req,res) => {
 
@@ -153,7 +164,7 @@ app.get('/add/teams', (req,res) => {
             name:"Talae El Gesh"
         }
     ])
-
+    res.send()
 })
 app.listen(process.env.PORT, () => {
     console.log('Server is Up on', process.env.PORT)

@@ -45,7 +45,8 @@ const matchSchema = new mongoose.Schema(
         reservedSeats:{
             type: Array,
             required: true,
-            unique: true
+            unique: true,
+            default: [],
         },
         allSeats:{
             type: Array,

@@ -104,7 +104,7 @@ router.post('/signIn', async (req, res) => {
         
         const userJson = user._doc
 
-        delete userJson.email
+        
         delete userJson.password
         delete userJson.accepted
         //Send response
