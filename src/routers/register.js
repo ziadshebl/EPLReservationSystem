@@ -61,19 +61,9 @@ router.post('/signUp', async (req, res) => {
             sameSite: 'none'
         })
 
-        const userJson = newUser._doc
-
-        delete userJson.email
-        delete userJson.password
-        delete userJson.role
-        delete userJson.accepted
+       
         //Send response
-        res.status(201).send({
-            accessToken,
-            profile:{
-                ...userJson
-            }
-        })
+        res.status(201).send()
         
 
     } catch (e) {
@@ -127,9 +117,16 @@ router.post('/signIn', async (req, res) => {
         })
 
     } catch (e) {
-        res.status(400).send({
-            error: e.message
-        })
+        if(e.message == "Your account is still not accepted!"){
+
+            res.status(404).send()
+        }
+        else{
+            res.status(400).send({
+                error: e.message
+            })
+        }
+        
     }
 
 
