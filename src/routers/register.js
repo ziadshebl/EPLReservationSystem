@@ -119,7 +119,7 @@ router.post('/signIn', async (req, res) => {
         delete userJson.role
         delete userJson.accepted
         //Send response
-        res.status(201).send({
+        res.status(200).send({
             accessToken,
             profile:{
                 ...userJson
