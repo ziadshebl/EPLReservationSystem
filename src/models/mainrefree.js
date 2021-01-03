@@ -10,7 +10,7 @@ const mainRefereeSchema = new mongoose.Schema(
     }
 )
 
-teamSchema.virtual('match', {
+mainRefereeSchema.virtual('match', {
     ref: 'Match',
     localField: '_id',
     foreignField: 'mainReferee'

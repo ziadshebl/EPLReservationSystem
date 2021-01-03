@@ -106,7 +106,6 @@ router.post('/signIn', async (req, res) => {
 
         delete userJson.email
         delete userJson.password
-        delete userJson.role
         delete userJson.accepted
         //Send response
         res.status(200).send({

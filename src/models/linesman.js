@@ -10,12 +10,12 @@ const linesmanSchema = new mongoose.Schema(
     }
 )
 
-teamSchema.virtual('match', {
+linesmanSchema.virtual('match', {
     ref: 'Match',
     localField: '_id',
     foreignField: 'linesman1'
 })
-teamSchema.virtual('match', {
+linesmanSchema.virtual('match', {
     ref: 'Match',
     localField: '_id',
     foreignField: 'linesman2'
