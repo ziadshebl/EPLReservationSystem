@@ -4,29 +4,42 @@ const express = require('express')
 const MainRefree = require('../models/mainrefree')
 const Team = require('../models/teams')
 const LinesMan = require('../models/linesman')
-const Match = require('../models/match')
+const Stadium = require('../models/stadium')
+
 // //Importing auth
 // const { checkAccessToken, checkRefreshToken, checkResetPasswordToken } = require('../middleware/auth')
 
 //Intialize router
 const router = express.Router()
 
-//Get Teams and Get Referees and Get LinesMen
-router.get('/getReferees', async (req,res) => {
-    res.send(await MainRefree.find({}))
-}) 
-router.get('/getLinesMen', async (req,res) => {
+//Add Stadium
+router.post('/addStadium', async (req, res) => {
 
-    res.send(await LinesMan.find({}))
+    try{
+        const {
+            name,
+            rows,
+            numberOfSeatsPerRow
+        } = req.body
+        
+        const stadium = new Stadium({
+            name,
+            rows,
+            numberOfSeatsPerRow
+        })
+        await stadium.save()
 
+        res.send()
+    }catch(e){
 
-}) 
-router.get('/getTeams', async (req,res) => {
+        res.status(400).send({
+            error: "Stadium name already exists"
+        })
+    }
+    
 
-    res.send(await Team.find({}))
-
-
-}) 
+   
+})
 
 
 module.exports = router

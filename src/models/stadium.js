@@ -19,12 +19,12 @@ const stadiumSchema = new mongoose.Schema(
 )
 
 
-teamSchema.virtual('match', {
+stadiumSchema.virtual('match', {
     ref: 'Match',
     localField: '_id',
     foreignField: 'matchVenue'
 })
 
-const Stadium = mongoose.model('Stadium', stadiumSchema)
+const Stadium = mongoose.model('Stadium', stadiumSchema, 'stadiums')
 
 module.exports = Stadium
