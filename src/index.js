@@ -9,7 +9,8 @@ const cookieParser = require('cookie-parser');
 const registerRouter = require('./routers/register.js');
 const matchRouter = require('./routers/match')
 const managerRouter = require('./routers/manager')
-
+const userRouter = require('./routers/user')
+const adminRouter = require('./routers/admin')
 
 const { aggregate } = require('./models/user');
 const MainRefree = require('./models/mainrefree')
@@ -32,6 +33,9 @@ app.use(cookieParser())
 app.use('/register',registerRouter)
 app.use('/match', matchRouter)
 app.use('/manager', managerRouter)
+app.use('/user', userRouter)
+app.use('/admin', adminRouter)
+
 app.get('/', (req,res) => {
 
     res.send("Gamed");
