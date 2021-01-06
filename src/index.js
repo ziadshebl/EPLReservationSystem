@@ -40,7 +40,7 @@ app.get('/', (req,res) => {
 
     res.send("Gamed");
 })
-app.use('/seeds', (req, res) => {
+app.get('/seeds', (req, res) => {
     
     MainRefree.insertMany([
         {

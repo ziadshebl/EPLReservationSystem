@@ -5,12 +5,14 @@ const matchSchema = new mongoose.Schema(
         homeTeam:{
             type: mongoose.Schema.Types.ObjectId,
             required: true,
-            ref: 'Team'
+            ref: 'Team',
+            unique:false,
         },
         awayTeam:{
             type: mongoose.Schema.Types.ObjectId,
             required: true,
-            ref: 'Team'
+            ref: 'Team',
+            unique:false,
         },
         matchVenue:{
             type: mongoose.Schema.Types.ObjectId,
@@ -20,12 +22,12 @@ const matchSchema = new mongoose.Schema(
         date:{
             type: Date,
             required: true,
-            unique: true
+           
         },
         time:{
             type: String,
             required: true,
-            unique: true
+           
         },
         mainReferee:{
             type: mongoose.Schema.Types.ObjectId,
@@ -43,19 +45,17 @@ const matchSchema = new mongoose.Schema(
             ref: 'Linesman'
         },
         reservedSeats:{
-            type: Array,
+            type: [String],
             required: true,
-            unique: true,
             default: [],
         },
         allSeats:{
-            type: Array,
-            required: true,
-            unique: true
+            type: [String],
+            required: true
         },
     }
 )
-
+matchSchema.index({homeTeam: 1, awayTeam: 1}, {unique: true});
 const Match = mongoose.model('Match', matchSchema)
 
 module.exports = Match
