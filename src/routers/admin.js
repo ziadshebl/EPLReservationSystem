@@ -104,7 +104,8 @@ router.get('/getAllUsers', checkAccessTokenOnly, HasRole('admin'), async( req, r
 
     try{
         const users = await User.find({
-            role: 'user'
+            role: 'user',
+            accepted: true,
         },{
             password: 0,
         }).lean()
@@ -117,4 +118,26 @@ router.get('/getAllUsers', checkAccessTokenOnly, HasRole('admin'), async( req, r
     }
 
 })
+
+router.post('/deleteUser',checkAccessTokenOnly, HasRole('admin'), async( req, res) => {
+
+    const {
+        _id
+    }= 
+    req.body
+
+    try{
+        const result = await User.deleteOne({
+            _id,
+            role: 'user',
+        })
+    if(!result.ok) throw new Error("User not found")
+        res.send()
+    }catch(e){
+        res.status(400).send({
+            e: e.message
+        })
+    }
+
+} )
 module.exports = router

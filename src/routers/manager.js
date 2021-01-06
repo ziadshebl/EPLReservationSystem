@@ -37,24 +37,36 @@ router.post('/addStadium', async (req, res) => {
         })
     }
     
-
-   
 })
 
 // router.post('/addMatch', async(req, res) => {
 //     try{
 //         const {
-//             name,
-//             rows,
-//             numberOfSeatsPerRow
+//             homeTeam,
+//             awayTeam,
+//             matchVenue,
+//             date,
+//             time,
+//             mainRefree,
+//             linesman1,
+//             linesman2,
 //         } = req.body
         
-//         const stadium = new Stadium({
+//         const stadium = await Stadium.findById({
+//             matchVenue
+//         });
+//         console.log(matchVenue)
+//         for(var i = 0 ; i< rows ;i++){
+//             for(var j =0; j< rows; j++){
+
+//             }
+//         }
+//         const match = new Match({
 //             name,
 //             rows,
 //             numberOfSeatsPerRow
 //         })
-//         await stadium.save()
+//         // await match.save()
 
 //         res.send()
 //     }catch(e){
