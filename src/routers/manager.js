@@ -86,4 +86,53 @@ router.post('/addMatch', async(req, res) => {
     }
     
 })
+
+router.post('/editMatch', async(req,res) => {
+
+    try{
+
+        const {
+            matchVenue,
+            linesman1,
+            linesman2,
+            mainReferee,
+            date,
+            time,
+            _id,
+        } = req.body
+        if(linesman1 == linesman2) throw new Error("Invalid Data")
+        const stadium = await Stadium.findById(
+            matchVenue
+        );
+        console.log(stadium)
+        var allSeats = [];
+        for(var i = 0 ; i< stadium.rows ;i++){
+            for(var j =0; j< stadium.numberOfSeatsPerRow; j++){
+                allSeats.push(`R${i}C${j}`)
+            }
+        }
+        console.log(mainReferee)
+        const match = await Match.findByIdAndUpdate({
+            _id
+        },{
+            matchVenue,
+            linesman1,
+            linesman2,
+            mainReferee,
+            date,
+            time,
+            allSeats,
+            reservedSeats: []
+        })
+        if(!match) throw new Error("No Match Found")
+        res.send()
+    }catch(e){
+
+        res.status(400).send({
+            error: e.message
+        })
+    }
+
+
+})
 module.exports = router

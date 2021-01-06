@@ -134,7 +134,28 @@ router.post('/signIn', async (req, res) => {
 
 })
 
+router.post('/changePassword', async(req,res) => {
 
+    try{
+
+        const {
+            _id,
+            password
+        }= req.body
+
+        const user = await User.findById(_id);
+
+        user.password = password;
+        await user.save()
+
+        res.send()
+    }catch(e){
+
+        res.status(400).send({
+            error: e.message
+        })
+    }
+})
 
 // router.post('/logout', checkAccessToken, async (req, res) => {
 //     try {
