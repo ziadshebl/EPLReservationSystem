@@ -29,7 +29,7 @@ router.post('/addStadium', async (req, res) => {
         })
         await stadium.save()
 
-        res.send()
+        res.send(stadium)
     }catch(e){
 
         res.status(400).send({
@@ -41,5 +41,28 @@ router.post('/addStadium', async (req, res) => {
    
 })
 
+// router.post('/addMatch', async(req, res) => {
+//     try{
+//         const {
+//             name,
+//             rows,
+//             numberOfSeatsPerRow
+//         } = req.body
+        
+//         const stadium = new Stadium({
+//             name,
+//             rows,
+//             numberOfSeatsPerRow
+//         })
+//         await stadium.save()
 
+//         res.send()
+//     }catch(e){
+
+//         res.status(400).send({
+//             error: "Stadium name already exists"
+//         })
+//     }
+    
+// })
 module.exports = router

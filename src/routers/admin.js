@@ -34,15 +34,27 @@ router.get('/getPendingUsers', checkAccessTokenOnly, HasRole('admin'), async (re
    
 })
 
-router.post('/acceptAllPending',checkAccessTokenOnly, HasRole('admin'), async (req,res) => {
+router.post('/updateAllPending',checkAccessTokenOnly, HasRole('admin'), async (req,res) => {
 
     try{
-        await User.updateMany({
-            accepted: false,
-            role: 'user'
-        },{
-           accepted: true,
-        })
+        const {
+            accepted,
+        }= 
+        req.body
+        if(accepted){
+            await User.updateMany({
+                accepted: false,
+                role: 'user'
+            },{
+               accepted: true,
+            })
+        }
+        else{
+            await User.deleteMany({
+                accepted: false,
+                role: 'user'
+            })
+        }
         res.send()
     }catch(e){
 
