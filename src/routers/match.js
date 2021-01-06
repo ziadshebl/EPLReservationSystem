@@ -41,5 +41,9 @@ router.get('/getStadium', async(req, res) => {
         })
     }
 })
+router.get('/getMatches', async(req,res) => {
 
+
+    res.send(await Match.find({}))
+})
 module.exports = router

@@ -23,7 +23,7 @@ router.get('/', (req, res) => {
 // //User Routes
 router.post('/signUp', async (req, res) => {
 
-    const { email,
+    let { email,
         password,
         firstName,
         lastName,
@@ -36,6 +36,7 @@ router.post('/signUp', async (req, res) => {
     console.log(req.body)
     let newUser
     try {
+        email = email.toLowerCase();
         newUser = new User({
             userName,
             password,
@@ -86,10 +87,12 @@ router.post('/signUp', async (req, res) => {
 })
 
 router.post('/signIn', async (req, res) => {
-    const { email, password } = req.body
+    let { email, password } = req.body
 
     console.log(req.body)
     try {
+        if(email.includes('@'))
+            email = email.toLowerCase()
         const user = await User.findByCredentials(email, password)
 
         //Generate tokens
