@@ -87,4 +87,22 @@ router.post('/updatePending', checkAccessTokenOnly, HasRole('admin'), async(req,
     } 
 
 })
+
+router.get('/getAllUsers', checkAccessTokenOnly, HasRole('admin'), async( req, res) => {
+
+    try{
+        const users = await User.find({
+            role: 'user'
+        },{
+            password: 0,
+        }).lean()
+        res.send(users)
+    }catch(e){
+
+        res.status(400).send({
+            error: e.message
+        })
+    }
+
+})
 module.exports = router
