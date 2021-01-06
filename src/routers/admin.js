@@ -7,7 +7,7 @@ const LinesMan = require('../models/linesman')
 const Stadium = require('../models/stadium')
 
 // //Importing auth
-const { checkAccessTokenAndGetUser,checkAccessTokenOnly, HasRole} = require('../middleware/auth')
+const { checkAccessTokenOnly, HasRole} = require('../middleware/auth')
 
 //Intialize router
 const router = express.Router()
@@ -50,11 +50,13 @@ router.post('/updateAllPending',checkAccessTokenOnly, HasRole('admin'), async (r
             })
         }
         else{
-            await User.deleteMany({
+            const result = await User.deleteMany({
                 accepted: false,
                 role: 'user'
             })
+            if(!result.n) throw new Error("An Error Occurred")
         }
+        
         res.send()
     }catch(e){
 
@@ -76,7 +78,8 @@ router.post('/updatePending', checkAccessTokenOnly, HasRole('admin'), async(req,
                 _id,
                 accepted: false,
             })
-        if(!result.ok) throw new Error("User not found")
+            console.log(result)
+        if(!result.n) throw new Error("User not found")
             res.send()
         }
         else{
@@ -100,7 +103,7 @@ router.post('/updatePending', checkAccessTokenOnly, HasRole('admin'), async(req,
 
 })
 
-router.get('/getAllUsers', checkAccessTokenOnly, HasRole('admin'), async( req, res) => {
+router.get('/getAllUsers',checkAccessTokenOnly, HasRole('admin'),async( req, res) => {
 
     try{
         const users = await User.find({
@@ -131,7 +134,7 @@ router.post('/deleteUser',checkAccessTokenOnly, HasRole('admin'), async( req, re
             _id,
             role: 'user',
         })
-    if(!result.ok) throw new Error("User not found")
+    if(!result.n) throw new Error("User not found")
         res.send()
     }catch(e){
         res.status(400).send({
