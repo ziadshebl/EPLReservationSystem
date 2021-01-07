@@ -80,10 +80,19 @@ router.post('/addMatch', async(req, res) => {
         res.send(await match.populate('homeTeam').populate('awayTeam').populate('matchVenue')
         .populate('mainReferee').populate('linesman1').populate('linesman2'))
     }catch(e){
-
-        res.status(400).send({
-            error: e.message
-        })
+        
+        if(e.code === 11000)
+        {
+            res.status(400).send({
+                error: "Home Team And Away Team Already Have A Match!"
+            })
+        }
+        else{
+            res.status(400).send({
+                error: e.message
+            })
+        }
+        
     }
     
 })
