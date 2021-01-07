@@ -112,6 +112,7 @@ router.get('/getAllUsers',checkAccessTokenOnly, HasRole('admin'),async( req, res
         },{
             password: 0,
         }).lean()
+        console.log(users);
         res.send(users)
     }catch(e){
 
