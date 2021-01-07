@@ -12,6 +12,12 @@ const { checkAccessTokenAndGetUser,checkAccessTokenOnly, HasRole} = require('../
 //Intialize router
 const router = express.Router()
 
+router.get('/getProfile', checkAccessTokenAndGetUser, async(req,res) => {
+
+    const user = req.user;
+    delete user.password
+    res.send(user)
+})
 //Add Stadium
 router.post('/editProfile', checkAccessTokenAndGetUser, async (req, res) => {
 

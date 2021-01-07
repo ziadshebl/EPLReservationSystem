@@ -17,7 +17,7 @@ const checkAccessToken = async (req, res, next, getUser) => {
         
         //Fetch user from database
         if(getUser)
-            user = await User.findById(user._id)
+            user = await User.findById(user._id).lean()
         
         
         //Throw error if no user is found
