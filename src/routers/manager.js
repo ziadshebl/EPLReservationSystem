@@ -52,7 +52,7 @@ router.post('/addMatch', async(req, res) => {
             linesman1,
             linesman2,
         } = req.body
-        if(homeTeam === awayTeam || linesman1 == linesman2) throw new Error("Invalid Data")
+        if(homeTeam === awayTeam || linesman1 === linesman2) throw new Error("Invalid Data")
         const stadium = await Stadium.findById(
             matchVenue
         );
