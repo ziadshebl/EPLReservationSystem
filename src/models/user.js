@@ -104,7 +104,8 @@ userSchema.statics.findByCredentials = async (email, password)=>{
     }
     // if(!user.accepted){
     //     throw new Error('Your account is still not accepted!')
-    // }
+    // }'   
+    // console.log(user)
     return user
 }
 

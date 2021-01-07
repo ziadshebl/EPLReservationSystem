@@ -1,7 +1,8 @@
 const express = require('express')
 
 //Importing Models
-const User = require('../models/user')
+const User = require('../models/user');
+const { checkAccessTokenAndGetUser } = require('../middleware/auth');
 
 //Improting middlewares
 
@@ -134,18 +135,20 @@ router.post('/signIn', async (req, res) => {
 
 })
 
-router.post('/changePassword', async(req,res) => {
+router.post('/changePassword', checkAccessTokenAndGetUser,async(req,res) => {
 
     try{
 
         const {
-            _id,
-            password
+            oldPassword,
+            newPassword,
         }= req.body
 
-        const user = await User.findById(_id);
+        const user = await User.findByCredentials(req.user.email,oldPassword);
 
-        user.password = password;
+        console.log(user);
+        user.password = newPassword;
+        
         await user.save()
 
         res.send()
