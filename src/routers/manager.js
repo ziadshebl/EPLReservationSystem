@@ -77,7 +77,8 @@ router.post('/addMatch', async(req, res) => {
         })
         await match.save()
 
-        res.send(match)
+        res.send(await match.populate('homeTeam').populate('awayTeam').populate('matchVenue')
+        .populate('mainReferee').populate('linesman1').populate('linesman2'))
     }catch(e){
 
         res.status(400).send({

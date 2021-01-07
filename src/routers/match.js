@@ -44,6 +44,7 @@ router.get('/getStadium', async(req, res) => {
 router.get('/getMatches', async(req,res) => {
 
 
-    res.send(await Match.find({}))
+    res.send(await Match.find({}).populate('homeTeam').populate('awayTeam').populate('matchVenue')
+    .populate('mainReferee').populate('linesman1').populate('linesman2'))
 })
 module.exports = router
