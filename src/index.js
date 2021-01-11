@@ -38,7 +38,7 @@ wss.on('connection', (ws) => {
         }catch(e){
             console.log(e.message)
         }
-        console.log(data)
+        // console.log(data)
         ws.send("Cleaninggggggggggg Codeeeeeeeeeeee")
     })
     ws.addEventListener('')
