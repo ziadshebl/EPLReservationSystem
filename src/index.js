@@ -19,6 +19,11 @@ const LinesMan = require('./models/linesman')
 
 const app = express()
 const server = http.createServer(app)
+const io = require('socket.io')(server)
+io.on('connection',(socket) => {
+
+    console.log('socket');
+})
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(cors({
@@ -164,4 +169,3 @@ app.get('/', (req,res) =>{
 server.listen(process.env.PORT, () => {
     console.log('Server is Up on', process.env.PORT)
 })
-require('./socketHandler/socket')(server)
