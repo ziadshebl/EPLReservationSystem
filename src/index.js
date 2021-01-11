@@ -4,6 +4,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const cookieParser = require('cookie-parser');
+const http = require('http')
 
 //Different routes
 const registerRouter = require('./routers/register.js');
@@ -12,17 +13,12 @@ const managerRouter = require('./routers/manager')
 const userRouter = require('./routers/user')
 const adminRouter = require('./routers/admin')
 
-const { aggregate } = require('./models/user');
 const MainRefree = require('./models/mainrefree')
 const Team = require('./models/teams')
 const LinesMan = require('./models/linesman')
-// const userRouter = require('./routers/user.js')
-// const postRouter = require('./routers/post.js')
-// const adminRouter = require('./routers/admin')
-// const supplierRouter = require('./routers/supplier')
-// const storeRouter = require('./routers/store.js')
-//Configuring the app
+
 const app = express()
+const server = http.createServer(app)
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(cors({
@@ -36,10 +32,6 @@ app.use('/manager', managerRouter)
 app.use('/user', userRouter)
 app.use('/admin', adminRouter)
 
-app.get('/', (req,res) => {
-
-    res.send("Gamed");
-})
 app.get('/seeds', (req, res) => {
     
     MainRefree.insertMany([
@@ -163,7 +155,13 @@ app.get('/seeds', (req, res) => {
     res.send()
 })
 
+app.get('/', (req,res) =>{
 
-app.listen(process.env.PORT, () => {
+    res.send('Gamed')
+})
+
+
+server.listen(process.env.PORT, () => {
     console.log('Server is Up on', process.env.PORT)
 })
+require('./socketHandler/socket')(server)
