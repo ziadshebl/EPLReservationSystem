@@ -35,9 +35,14 @@ ws.on('connection',function connection(socket) {
         socket.send("Gamed")
     })
 
+    socket.emit("Bahbk")
    
 })
-ws.on
+ws.on('Shahda',(message) => {
+
+    console.log("Message recieved")
+    console.log(message)
+})
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(cors({
