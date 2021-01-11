@@ -31,7 +31,13 @@ wss.on('connection', (ws) => {
   
     ws.on('message', message => {
 
-        const data = message.split(' ')
+        // const data = message.split(' ')
+        try{
+            const test = JSON.parse(message)
+            console.log(test)
+        }catch(e){
+            console.log(e.message)
+        }
         console.log(data)
         ws.send("Cleaninggggggggggg Codeeeeeeeeeeee")
     })
