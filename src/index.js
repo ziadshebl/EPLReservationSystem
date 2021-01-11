@@ -26,7 +26,9 @@ const wss = new WebServer.Server({
     path: '/',
     perMessageDeflate: false
 })
-wss.on('connection', ws => {
+wss.on('connection', (ws,messageCame) => {
+
+    console.log(messageCame)
     ws.on('message', message => {
       ws.send(message)
     })
