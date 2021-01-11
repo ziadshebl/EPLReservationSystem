@@ -67,14 +67,15 @@ module.exports = function(wss){
                 const match = await Match.findOneAndUpdate({
                     _id: matchId
                 },{
-                    $push:{
+                    $addToSet:{
                         reservedSeats: seat
                     }
                 })
+                console.log(match);
                 if(match.reservedSeats.includes(seat)) throw new Error('Seat is Already Reserved')
     
                 match.reservedSeats.push(seat)
-                console.log(reservedSeats)
+                console.log(match.reservedSeats)
                 res.send()
                 Object.entries(rooms[matchId]).forEach(([, sock]) => sock.send({ reservedSeats: match.reservedSeats }));
             }catch(e){
