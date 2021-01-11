@@ -25,18 +25,19 @@ const ws = new WebServer.Server({
     path: '/',
     perMessageDeflate: false
 })
-ws.on('connection',(data) => {
+ws.on('connection',function connection(socket) {
 
-    console.log(data)
-    ws.on('Shahda', (socket) => {
+    console.log("Conneted")
+    socket.on('Shahda', function incoming(messgae)  {
         
         console.log("Event is Correct");
-        console.log(socket)
-        ws.send("Gamed")
+        console.log(message)
+        socket.send("Gamed")
     })
 
    
 })
+ws.on
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(cors({
