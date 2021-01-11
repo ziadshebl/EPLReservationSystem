@@ -8,13 +8,13 @@ const LinesMan = require('../models/linesman')
 const Stadium = require('../models/stadium')
 
 // //Importing auth
-// const { checkAccessToken, checkRefreshToken, checkResetPasswordToken } = require('../middleware/auth')
+const { checkAccessTokenOnly, HasRole} = require('../middleware/auth')
 
 //Intialize router
 const router = express.Router()
 
 //Add Stadium
-router.post('/addStadium', async (req, res) => {
+router.post('/addStadium', checkAccessTokenOnly, HasRole('manager'), async (req, res) => {
 
     try{
         const {
@@ -40,7 +40,7 @@ router.post('/addStadium', async (req, res) => {
     
 })
 
-router.post('/addMatch', async(req, res) => {
+router.post('/addMatch',checkAccessTokenOnly, HasRole('manager'), async(req, res) => {
     try{
         const {
             homeTeam,
@@ -97,7 +97,7 @@ router.post('/addMatch', async(req, res) => {
     
 })
 
-router.post('/editMatch', async(req,res) => {
+router.post('/editMatch', checkAccessTokenOnly, HasRole('manager'),async(req,res) => {
 
     try{
 
