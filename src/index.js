@@ -20,25 +20,18 @@ const LinesMan = require('./models/linesman')
 
 const app = express()
 const server = http.createServer(app)
-const ws = new WebServer.Server({
+const wss = new WebServer.Server({
     server: server,
     path: '/',
     perMessageDeflate: false
 })
-ws.on('connection',function connection(socket) {
-
-    console.log("Conneted")
-    socket.on('Shahda', function incoming(messgae)  {
-        
-        console.log("Event is Correct");
-        console.log(message)
-        socket.send("Gamed")
+wss.on('connection', ws => {
+    ws.on('message', message => {
+      console.log(`Received message => ${message}`)
     })
-
-    socket.emit("Bahbk")
-   
-})
-ws.on('Shahda',(message) => {
+    ws.send('ho!')
+  })
+wss.on('Shahda',(message) => {
 
     console.log("Message recieved")
     console.log(message)
