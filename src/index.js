@@ -31,8 +31,10 @@ ws.on('connection',(data) => {
     ws.on('Shahda', (socket) => {
         
         console.log("Event is Correct");
+        console.log(socket)
         ws.send("Gamed")
     })
+
    
 })
 app.use(bodyParser.json())
