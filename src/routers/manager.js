@@ -110,6 +110,7 @@ router.post('/editMatch', checkAccessTokenOnly, HasRole('manager'),async(req,res
             time,
             _id,
         } = req.body
+        console.log(req.body);
         if(linesman1 == linesman2) throw new Error("Invalid Data")
         const stadium = await Stadium.findById(
             matchVenue

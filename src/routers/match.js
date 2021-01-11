@@ -13,7 +13,7 @@ const Stadium = require('../models/stadium')
 const router = express.Router()
 
 //Get Teams and Get Referees and Get LinesMen
-router.get('/getReferees', async (req,res) => {
+router.get('/getReferees',  async (req,res) => {
     res.send(await MainRefree.find({}))
 }) 
 router.get('/getLinesMen', async (req,res) => {
