@@ -20,6 +20,7 @@ const LinesMan = require('./models/linesman')
 
 const app = express()
 const server = http.createServer(app)
+const io  = require('socket.io')(server)
 const wss = new WebServer.Server({
     server: server,
     path: '/',
@@ -29,12 +30,17 @@ wss.on('connection', ws => {
     ws.on('message', message => {
       ws.send(message)
     })
+    ws.addEventListener('')
     ws.send('ho!')
   })
 wss.on('Shahda',(message) => {
 
     console.log("Message recieved")
     console.log(message)
+})
+io.on('connection', () => {
+
+    console.log("Socket sh8alllllllllllll")
 })
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
