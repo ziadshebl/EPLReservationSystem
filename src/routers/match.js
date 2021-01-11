@@ -37,7 +37,7 @@ module.exports = function(wss){
                 if(action === 'join'){
                     if(! rooms[matchId]) rooms[matchId] = {}; // create the room
                     if(! rooms[matchId][userId]) rooms[matchId][userId] = ws; // join the room
-                    console.log(ws)
+                    
                 }
     
                else if (action === 'leave'){
@@ -82,7 +82,7 @@ module.exports = function(wss){
                 if(rooms[matchId])
                 Object.entries(rooms[matchId]).forEach(([, sock])=> {
 
-                    console.log(sock)
+                    console.log("Ana get hena 2b3at le zyad el gamed")
                     sock.send(JSON.stringify({ reservedSeats: match.reservedSeats }))
                      
                     });
