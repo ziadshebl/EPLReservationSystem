@@ -26,7 +26,7 @@ const wss = new WebServer.Server({
     path: '/',
     perMessageDeflate: false
 })
-wss.on('connection', (ws,messageCame) => {
+wss.on('connection', (ws) => {
 
   
     ws.on('message', message => {
@@ -34,7 +34,7 @@ wss.on('connection', (ws,messageCame) => {
         const {
             matchId,
 
-        } = JSON.parse(message)
+        } =message
         console.log(matchId)
         ws.send("Cleaninggggggggggg Codeeeeeeeeeeee")
     })
