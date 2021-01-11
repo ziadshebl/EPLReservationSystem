@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const cookieParser = require('cookie-parser');
 const http = require('http')
+const WebServer = require('ws')
 
 //Different routes
 const registerRouter = require('./routers/register.js');
@@ -19,10 +20,14 @@ const LinesMan = require('./models/linesman')
 
 const app = express()
 const server = http.createServer(app)
-const io = require('socket.io')(server)
-io.on('connection',(socket) => {
+const ws = new WebServer.Server({
+    server: server,
+    path: '/',
+    perMessageDeflate: false
+})
+ws.on('connection',(socket) => {
 
-    console.log('socket');
+    console.log("Connected")
 })
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
