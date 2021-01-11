@@ -83,7 +83,7 @@ module.exports = function(wss){
                 Object.entries(rooms[matchId]).forEach(([, sock])=> {
 
                     console.log(sock)
-                    sock.send({ reservedSeats: match.reservedSeats })
+                    sock.send(JSON.stringify({ reservedSeats: match.reservedSeats }))
                      
                     });
                 res.send()
