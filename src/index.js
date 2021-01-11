@@ -17,6 +17,7 @@ const adminRouter = require('./routers/admin')
 const MainRefree = require('./models/mainrefree')
 const Team = require('./models/teams')
 const LinesMan = require('./models/linesman')
+const Match = require('./models/match')
 
 const app = express()
 const server = http.createServer(app)
@@ -26,17 +27,53 @@ const wss = new WebServer.Server({
     path: '/',
     perMessageDeflate: false
 })
+const rooms = {}
 wss.on('connection', (ws) => {
 
   
-    ws.on('message', message => {
+    ws.on('message', async (message) => {
 
         // const data = message.split(' ')
         try{
-            const test = JSON.parse(message)
-            console.log(test)
+            const {
+                action,
+                matchId,
+                userId,
+                seat
+            } = JSON.parse(message)
+            console.log(action)
+            
+            if(action === 'join'){
+                if(! rooms[matchId]) rooms[matchId] = {}; // create the room
+                if(! rooms[matchId][userId]) rooms[matchId][userId] = ws; // join the room
+            }
+
+            else if(action === 'book'){
+                const match = await Match.findOneAndUpdate({
+                    _id: matchId
+                },{
+                    $push:{
+                        reservedSeats: seat
+                    }
+                })
+                if(match.reservedSeats.includes(seat)) throw new Error('Seat is Already Reserved')
+
+                match.reservedSeats.push(seat)
+                console.log(reservedSeats)
+                Object.entries(rooms[matchId]).forEach(([, sock]) => sock.send({ reservedSeats: match.reservedSeats }));
+            }else if (action === 'leave'){
+                if(! rooms[matchId][userId]) return;
+
+                // if the one exiting is the last one, destroy the room
+                if(Object.keys(rooms[matchId]).length === 1) delete rooms[matchId];
+                // otherwise simply leave the room
+                else delete rooms[matchId][userId];
+            }
         }catch(e){
-            console.log(e.message)
+            
+            ws.send({
+                error: e.message
+            })
         }
         // console.log(data)
         ws.send("Cleaninggggggggggg Codeeeeeeeeeeee")
