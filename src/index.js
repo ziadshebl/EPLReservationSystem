@@ -28,6 +28,12 @@ const ws = new WebServer.Server({
 ws.on('connection',(data) => {
 
     console.log(data)
+    ws.on('Shahda', (socket) => {
+        
+        console.log("Event is Correct");
+        ws.send("Gamed")
+    })
+   
 })
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
