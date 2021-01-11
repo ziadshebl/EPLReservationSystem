@@ -34,7 +34,7 @@ wss.on('connection', (ws,messageCame) => {
         const {
             matchId,
 
-        } = message
+        } = JSON.parse(message)
         console.log(matchId)
         ws.send("Cleaninggggggggggg Codeeeeeeeeeeee")
     })
