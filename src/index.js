@@ -25,9 +25,9 @@ const ws = new WebServer.Server({
     path: '/',
     perMessageDeflate: false
 })
-ws.on('connection',(socket) => {
+ws.on('connection',(data) => {
 
-    console.log("Connected")
+    console.log(data)
 })
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
