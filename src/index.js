@@ -31,11 +31,8 @@ wss.on('connection', (ws) => {
   
     ws.on('message', message => {
 
-        const {
-            matchId,
-
-        } =message
-        console.log(matchId)
+        const data = message.split(' ')
+        console.log(data)
         ws.send("Cleaninggggggggggg Codeeeeeeeeeeee")
     })
     ws.addEventListener('')
