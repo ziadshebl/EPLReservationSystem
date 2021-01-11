@@ -27,7 +27,7 @@ const wss = new WebServer.Server({
 })
 wss.on('connection', ws => {
     ws.on('message', message => {
-      console.log(`Received message => ${message}`)
+      ws.send(message)
     })
     ws.send('ho!')
   })
