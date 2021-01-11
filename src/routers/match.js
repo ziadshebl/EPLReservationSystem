@@ -15,11 +15,13 @@ const router = express.Router()
 
 module.exports = function(wss){
 
-
-    const rooms = {}
+    try{
+        const rooms = {}
     wss.on('connection', (ws) => {
-    
-      
+        ws.on('unhandledRejection', (reason, p) => {
+            console.log('Unhandled Rejection at: Promise', p, 'reason:', reason.stack);
+            // application specific logging, throwing an error, or other logic here
+          });
         ws.on('message', async (message) => {
     
             // const data = message.split(' ')
@@ -35,6 +37,7 @@ module.exports = function(wss){
                 if(action === 'join'){
                     if(! rooms[matchId]) rooms[matchId] = {}; // create the room
                     if(! rooms[matchId][userId]) rooms[matchId][userId] = ws; // join the room
+                    console.log(ws)
                 }
     
                else if (action === 'leave'){
@@ -71,14 +74,22 @@ module.exports = function(wss){
                         reservedSeats: seat
                     }
                 })
-                console.log(match);
+                //console.log(match);
                 if(match.reservedSeats.includes(seat)) throw new Error('Seat is Already Reserved')
     
                 match.reservedSeats.push(seat)
-                console.log(match.reservedSeats)
+                console.log(rooms[matchId])
+                if(rooms[matchId])
+                Object.entries(rooms[matchId]).forEach(([, sock])=> {
+
+                    console.log(sock)
+                    sock.send({ reservedSeats: match.reservedSeats })
+                     
+                    });
                 res.send()
-                Object.entries(rooms[matchId]).forEach(([, sock]) => sock.send({ reservedSeats: match.reservedSeats }));
+            
             }catch(e){
+                console.log(e)
                 res.status(400).send({
                     error:e.message
                 })
@@ -120,6 +131,11 @@ module.exports = function(wss){
             res.send(await Match.find({}).populate('homeTeam').populate('awayTeam').populate('matchVenue')
             .populate('mainReferee').populate('linesman1').populate('linesman2'))
         })
-    return router;
+        return router;
+    }catch(e){
+
+        console.log(e.message)
+    }
+    
 
 }
