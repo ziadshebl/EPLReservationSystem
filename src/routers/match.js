@@ -62,7 +62,7 @@ module.exports = function(wss){
             console.log('Disconnect');
 
             Object.keys(rooms).find((match)=>{
-                console.log(match)
+                console.log(rooms[match])
                 rooms[match].find(([userId, socket]) => {
                     if(socket === ws)
                     {
