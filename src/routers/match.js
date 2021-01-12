@@ -57,9 +57,31 @@ module.exports = function(wss){
             // console.log(data)
             //ws.send("Cleaninggggggggggg Codeeeeeeeeeeee")
         })
+        ws.on('disconnect', (message)=> {
+
+            console.log('Disconnect');
+
+            Object.keys(rooms).find((match)=>{
+
+                match.find(([userId, socket]) => {
+                    if(socket === ws)
+                    {
+                        console.log('Disconnect socket')
+                        if(Object.keys(rooms[match]).length === 1) delete rooms[matchId];
+                        else delete rooms[match][userId];
+                        return true
+                    }
+                })
+            }
+                
+                
+                 
+                );
+
+        })
         ws.send('ho!')
         })
-
+  
         router.post('/bookMatch', async(req,res) => {
             try{
 
