@@ -55,6 +55,7 @@ const matchSchema = new mongoose.Schema(
         },
     }
 )
+
 matchSchema.index({homeTeam: 1, awayTeam: 1}, {unique: true});
 const Match = mongoose.model('Match', matchSchema)
 

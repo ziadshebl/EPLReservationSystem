@@ -5,7 +5,7 @@ const MainRefree = require('../models/mainrefree')
 const Team = require('../models/teams')
 const LinesMan = require('../models/linesman')
 const Stadium = require('../models/stadium')
-
+const Reservation = require('../models/reservation')
 // //Importing auth
 const { checkAccessTokenAndGetUser,checkAccessTokenOnly, HasRole} = require('../middleware/auth')
 
@@ -53,5 +53,47 @@ router.post('/editProfile', checkAccessTokenAndGetUser, async (req, res) => {
    
 })
 
+router.get('/getReservations', checkAccessTokenOnly, async(req, res) =>{
+
+    try{
+
+        const reservation = await Reservation.find({
+            userId: req.user._id
+        }).populate({
+            path:'matchId',
+            populate: [
+                {
+                    path: 'homeTeam'
+                },
+                {
+                    path: 'awayTeam'
+                },
+                {
+                    path: 'linesman1'
+                },
+                {
+                    path: 'linesman2'
+                },
+                {
+                    path: 'mainReferee'
+                },
+                {
+                    path: 'matchVenue'
+                },
+            ]
+                
+            
+        })
+        
+
+        res.send(reservation)
+    }catch(e){
+
+        res.status(400).send({
+            error: e.message
+        })
+    }
+
+})
 
 module.exports = router

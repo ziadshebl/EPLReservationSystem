@@ -6,8 +6,9 @@ const Team = require('../models/teams')
 const LinesMan = require('../models/linesman')
 const Match = require('../models/match')
 const Stadium = require('../models/stadium')
+const Reservation = require('../models/reservation')
 // //Importing auth
-// const { checkAccessToken, checkRefreshToken, checkResetPasswordToken } = require('../middleware/auth')
+const { checkAccessTokenOnly} = require('../middleware/auth')
 
 //Intialize router
 const router = express.Router()
@@ -57,32 +58,11 @@ module.exports = function(wss){
             // console.log(data)
             //ws.send("Cleaninggggggggggg Codeeeeeeeeeeee")
         })
-        ws.on('close', (message)=> {
-
-            console.log('Disconnect');
-
-            Object.keys(rooms).find((match)=>{
-                console.log(rooms[match])
-                (rooms[match]).find(([userId, socket]) => {
-                    if(socket === ws)
-                    {
-                        console.log('Disconnect socket')
-                        if(Object.keys(rooms[match]).length === 1) delete rooms[matchId];
-                        else delete rooms[match][userId];
-                        return true
-                    }
-                })
-            }
-                
-                
-                 
-                );
-
-        })
+        
         ws.send('ho!')
         })
   
-        router.post('/bookMatch', async(req,res) => {
+        router.post('/bookMatch',checkAccessTokenOnly ,async(req,res) => {
             try{
 
                 const {
@@ -90,21 +70,30 @@ module.exports = function(wss){
                     seat
                 } = req.body
                 const match = await Match.findOneAndUpdate({
-                    _id: matchId
+                    _id: matchId,
+                    allSeats:seat
                 },{
                     $addToSet:{
                         reservedSeats: seat
                     }
                 })
                 //console.log(match);
+                if(!match) throw new Error('No match Found')
                 if(match.reservedSeats.includes(seat)) throw new Error('Seat is Already Reserved')
-    
+                
+                const reservation = new Reservation({
+                    matchId,
+                    seat,
+                    userId: req.user._id
+
+                })
+                await reservation.save()
                 match.reservedSeats.push(seat)
                 
                 if(rooms[matchId])
                 Object.entries(rooms[matchId]).forEach(([, sock])=> {
 
-                    console.log("Ana get hena 2b3at le zyad el gamed")
+                    
                     sock.send(JSON.stringify({ reservedSeats: match.reservedSeats }))
                      
                     });
@@ -117,6 +106,46 @@ module.exports = function(wss){
                 })
             }
             
+        })
+
+        router.post('/cancelReservation', checkAccessTokenOnly, async(req,res) => {
+
+            try{
+
+                const {
+                    reservationId,
+                    seat
+                } = req.body
+                const reservation = await Reservation.findOneAndDelete({
+                    _id: reservationId
+                })
+                console.log(reservation)
+                if(!reservation) throw new Error('No reservation Found')
+                const match = await Match.findOneAndUpdate({
+                       _id: reservation.matchId,
+                        allSeats:seat
+                },{
+                        $pull:{
+                            reservedSeats: seat
+                        }
+                },{
+                    new: true
+                })
+                if(!match) throw new Error('No Match Found')
+                console.log(match)
+                if(rooms[match.id])
+                Object.entries(rooms[match.id]).forEach(([, sock])=> {
+                    sock.send(JSON.stringify({ reservedSeats: match.reservedSeats }))
+                    });
+                res.send()
+            
+            }catch(e){
+                console.log(e)
+                res.status(400).send({
+                    error:e.message
+                })
+            }
+
         })
         //Get Teams and Get Referees and Get LinesMen
         router.get('/getReferees',  async (req,res) => {
