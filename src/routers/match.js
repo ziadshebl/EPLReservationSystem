@@ -36,7 +36,7 @@ module.exports = function(wss){
                 
                 if(action === 'join'){
                     if(! rooms[matchId]) rooms[matchId] = {}; // create the room
-                    if(! rooms[matchId][userId]) rooms[matchId][userId] = ws; // join the room
+                    rooms[matchId][userId] = ws; // join the room
                     
                 }
     
