@@ -62,8 +62,8 @@ module.exports = function(wss){
             console.log('Disconnect');
 
             Object.keys(rooms).find((match)=>{
-
-                match.find(([userId, socket]) => {
+                console.log(match)
+                rooms[match].find(([userId, socket]) => {
                     if(socket === ws)
                     {
                         console.log('Disconnect socket')
@@ -100,7 +100,7 @@ module.exports = function(wss){
                 if(match.reservedSeats.includes(seat)) throw new Error('Seat is Already Reserved')
     
                 match.reservedSeats.push(seat)
-                console.log(rooms[matchId])
+                
                 if(rooms[matchId])
                 Object.entries(rooms[matchId]).forEach(([, sock])=> {
 
