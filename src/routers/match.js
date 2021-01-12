@@ -71,24 +71,33 @@ module.exports = function(wss){
                 } = req.body
                 const match = await Match.findOneAndUpdate({
                     _id: matchId,
-                    allSeats:seat
+                    allSeats:{$all:seat},
+                    reservedSeats:{
+                        $not:{
+                            $all:seat
+                        }
+                    }
                 },{
                     $addToSet:{
                         reservedSeats: seat
                     }
+                },{
+                    new: true
                 })
                 //console.log(match);
-                if(!match) throw new Error('No match Found')
-                if(match.reservedSeats.includes(seat)) throw new Error('Seat is Already Reserved')
+                if(!match) throw new Error('Seats Are Reserved')
+               
                 
-                const reservation = new Reservation({
-                    matchId,
-                    seat,
-                    userId: req.user._id
-
+                seat.forEach(async (s) => {
+                    const reservation = new Reservation({
+                        matchId,
+                        seat:s,
+                        userId: req.user._id
+    
+                    })
+                    await reservation.save()
                 })
-                await reservation.save()
-                match.reservedSeats.push(seat)
+               
                 
                 if(rooms[matchId])
                 Object.entries(rooms[matchId]).forEach(([, sock])=> {
