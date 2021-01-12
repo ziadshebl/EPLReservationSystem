@@ -57,7 +57,7 @@ module.exports = function(wss){
             // console.log(data)
             //ws.send("Cleaninggggggggggg Codeeeeeeeeeeee")
         })
-        ws.on('disconnect', (message)=> {
+        ws.on('close', (message)=> {
 
             console.log('Disconnect');
 
