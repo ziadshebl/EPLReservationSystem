@@ -40,7 +40,7 @@ module.exports = function(wss){
                     
                 }
     
-               else if (action === 'leave'){
+               else if (action === 'disconnect'){
                     if(! rooms[matchId][userId]) return;
     
                     // if the one exiting is the last one, destroy the room
@@ -63,7 +63,7 @@ module.exports = function(wss){
 
             Object.keys(rooms).find((match)=>{
                 console.log(rooms[match])
-                rooms[match].find(([userId, socket]) => {
+                (rooms[match]).find(([userId, socket]) => {
                     if(socket === ws)
                     {
                         console.log('Disconnect socket')
