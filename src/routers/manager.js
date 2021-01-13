@@ -23,6 +23,7 @@ router.post('/addStadium', checkAccessTokenOnly, HasRole('manager'), async (req,
             numberOfSeatsPerRow
         } = req.body
         
+        if(numberOfSeatsPerRow > 20) throw new Error("SeatsPerRow is larger than 20")
         const stadium = new Stadium({
             name,
             rows,
@@ -32,9 +33,13 @@ router.post('/addStadium', checkAccessTokenOnly, HasRole('manager'), async (req,
 
         res.send(stadium)
     }catch(e){
-
+        if(e.code === 11000){
+            res.status(400).send({
+                error: "Stadium Name Already Exists"
+            })
+        }  else
         res.status(400).send({
-            error: "Stadium name already exists"
+            error: e.message
         })
     }
     
@@ -56,7 +61,7 @@ router.post('/addMatch',checkAccessTokenOnly, HasRole('manager'), async(req, res
         const stadium = await Stadium.findById(
             matchVenue
         );
-        console.log(stadium)
+        
         var allSeats = [];
         for(var i = 0 ; i< stadium.rows ;i++){
             for(var j =0; j< stadium.numberOfSeatsPerRow; j++){
